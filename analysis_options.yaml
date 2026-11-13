@@ -5,8 +5,3 @@ analyzer:
     - .workflow-backup/**
     - build/**
     - .dart_tool/**
-    - linux/**
-    - macos/**
-    - windows/**
-    - ios/**
-    - android/**

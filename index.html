@@ -1,59 +1,245 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
-  <base href="/Ayushman-Hospital-Book/">
-
-  <meta charset="UTF-8">
-  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
-
-  <!-- iOS meta tags & icons -->
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="ayush_hospitals">
-  <link rel="apple-touch-icon" href="icons/Icon-192.png">
-
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" href="favicon.png"/>
-
-  <title>ayush_hospitals</title>
-  <link rel="manifest" href="manifest.json">
-
-  <script>
-    // The value below is injected by flutter build, do not touch.
-    var serviceWorkerVersion = null;
-  </script>
-  <!-- This script adds the flutter initialization JS code -->
-  <script src="flutter.js" defer></script>
-  
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071c36">
+<meta name="description" content="Ayushman Hospital Book - Healthcare discovery and hospital appointment enquiries.">
+<title>Ayushman Hospital Book | Premium Healthcare</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial, sans-serif;background:#f5f9fc;color:#17304b}
+a{text-decoration:none;color:inherit}
+button,input,select,textarea{font:inherit}
+.wrap{width:min(1150px,92%);margin:auto}
+header{background:white;position:sticky;top:0;z-index:9;box-shadow:0 2px 15px #0000000b}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.logo{font-size:19px;font-weight:900;color:#092849}
+.logo b{background:#09b9a5;color:white;padding:10px;border-radius:12px;margin-right:8px}
+.navlinks{display:flex;gap:24px;font-size:14px;font-weight:bold;color:#51667a}
+.btn{display:inline-block;background:#09b9a5;color:white;padding:14px 21px;border:0;border-radius:10px;font-weight:bold}
+.hero{background:radial-gradient(circle at 80% 20%,#1a6880,transparent 35%),linear-gradient(120deg,#071c36,#12456b);color:white;padding:85px 0}
+.hero-grid{display:grid;grid-template-columns:1.2fr .8fr;align-items:center;gap:35px}
+.kicker{color:#16bca8;font-weight:bold;font-size:12px;letter-spacing:2px}
+.hero .kicker{color:#80eee0}
+h1{font-size:clamp(40px,6vw,67px);line-height:1.08;margin:20px 0}
+h1 span{color:#54dfc9}
+.hero p{font-size:17px;line-height:1.8;color:#c8d9e8;max-width:550px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:25px}
+.secondary{background:#ffffff18;border:1px solid #ffffff55}
+.visual{height:330px;border:1px solid #ffffff33;border-radius:28px;background:#ffffff13;display:grid;place-items:center;font-size:120px;position:relative}
+.visual small{position:absolute;background:white;color:#14334c;padding:15px;border-radius:12px;font-size:13px;right:10px;bottom:22px}
+.search{margin-top:-35px;position:relative;background:white;padding:20px;border-radius:17px;box-shadow:0 12px 40px #12334b16;display:grid;grid-template-columns:1fr 1fr auto;gap:12px}
+input,select,textarea{width:100%;padding:14px;border:1px solid #e0e9ef;border-radius:9px;background:white;color:#17304b}
+section{padding:70px 0}
+h2{font-size:34px;color:#092849;margin:10px 0}
+.desc{color:#73869a;line-height:1.7}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:17px;margin-top:28px}
+.card{background:white;border:1px solid #e7eef3;border-radius:16px;padding:22px;transition:.2s}
+.card:hover{transform:translateY(-5px);box-shadow:0 15px 35px #12334b12}
+.ico{font-size:32px;background:#e7f9f5;width:57px;height:57px;border-radius:14px;display:grid;place-items:center}
+.card h3{font-size:17px;color:#12344f}
+.card p{font-size:13px;color:#74869a;line-height:1.6}
+.blue{background:#eaf3f7}
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:28px}
+.hospital{padding:0;overflow:hidden}
+.hospital-top{height:140px;background:linear-gradient(130deg,#0a3157,#11a69b);display:grid;place-items:center;color:white;font-size:60px}
+.hospital-body{padding:22px}
+.tag{font-size:11px;color:#078e83;background:#e4f8f3;padding:7px 10px;border-radius:20px;font-weight:bold}
+.cta{padding:38px;border-radius:22px;background:linear-gradient(120deg,#092747,#105b75);color:white;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.cta h2{color:white}
+form{background:white;border:1px solid #e5edf2;border-radius:18px;padding:25px;margin-top:25px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+textarea{min-height:100px;grid-column:1/-1}
+footer{background:#071c36;color:white;padding:48px 0 20px}
+footer p,footer a{color:#b9cbd9;font-size:13px;line-height:2}
+.footgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px}
+.note{font-size:12px;color:#8191a2;line-height:1.6;margin-top:16px}
+@media(max-width:750px){
+ .navlinks{display:none}
+ .hero{padding:55px 0}
+ .hero-grid{grid-template-columns:1fr}
+ .visual{height:220px;font-size:85px}
+ .search{grid-template-columns:1fr}
+ .grid{grid-template-columns:repeat(2,1fr)}
+ .three{grid-template-columns:1fr}
+ .cta{display:block}
+ .cta .btn{margin-top:15px}
+ .footgrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:450px){
+ .grid{grid-template-columns:1fr}
+ .formgrid{grid-template-columns:1fr}
+ textarea{grid-column:auto}
+ .footgrid{grid-template-columns:1fr}
+ h2{font-size:28px}
+}
+</style>
 </head>
 <body>
-  <script>
-    window.addEventListener('load', function(ev) {
-      // Download main.dart.js
-      _flutter.loader.loadEntrypoint({
-        serviceWorker: {
-          serviceWorkerVersion: serviceWorkerVersion,
-        }
-      }).then(function(engineInitializer) {
-        return engineInitializer.initializeEngine();
-      }).then(function(appRunner) {
-        return appRunner.runApp();
-      });
-    });
-  </script>
+
+<header>
+<nav class="wrap">
+<a class="logo" href="#"><b>✚</b> Ayushman Hospital Book</a>
+<div class="navlinks">
+<a href="#home">Home</a>
+<a href="#departments">Departments</a>
+<a href="#hospitals">Hospitals</a>
+<a href="#doctors">Doctors</a>
+<a href="#appointment">Contact</a>
+</div>
+<a class="btn" href="#appointment">Get Started ↗</a>
+</nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+<div class="wrap hero-grid">
+<div>
+<div class="kicker">YOUR HEALTH. OUR PRIORITY.</div>
+<h1>Better Healthcare.<br><span>Better Tomorrow.</span></h1>
+<p>Discover healthcare services, explore medical specialities and take your next step towards better healthcare.</p>
+<div class="actions">
+<a class="btn" href="#appointment">Book an Enquiry →</a>
+<a class="btn secondary" href="#hospitals">Explore Hospitals</a>
+</div>
+</div>
+<div class="visual">🏥<small>✚ Healthcare Made Simple</small></div>
+</div>
+</section>
+
+<div class="wrap">
+<div class="search">
+<input id="search" placeholder="Search hospital or speciality...">
+<select id="category">
+<option value="">All Specialities</option>
+<option>Cardiology</option><option>Neurology</option>
+<option>Orthopedics</option><option>Pediatrics</option>
+<option>General Medicine</option>
+</select>
+<button class="btn" onclick="searchNow()">Search</button>
+</div>
+</div>
+
+<section id="departments">
+<div class="wrap">
+<div class="kicker">OUR SPECIALITIES</div>
+<h2>Explore Medical Departments</h2>
+<p class="desc">Discover healthcare specialities and explore available services.</p>
+<div class="grid">
+<div class="card searchable" data-key="cardiology heart"><div class="ico">❤️</div><h3>Cardiology</h3><p>Heart and cardiovascular care.</p></div>
+<div class="card searchable" data-key="neurology brain"><div class="ico">🧠</div><h3>Neurology</h3><p>Brain and nervous system care.</p></div>
+<div class="card searchable" data-key="orthopedics bone"><div class="ico">🦴</div><h3>Orthopedics</h3><p>Bone and joint healthcare.</p></div>
+<div class="card searchable" data-key="pediatrics child"><div class="ico">👶</div><h3>Pediatrics</h3><p>Healthcare for children.</p></div>
+<div class="card searchable" data-key="general medicine"><div class="ico">🩺</div><h3>General Medicine</h3><p>General medical consultation.</p></div>
+<div class="card searchable" data-key="gynecology women"><div class="ico">🌸</div><h3>Gynecology</h3><p>Women's healthcare.</p></div>
+<div class="card searchable" data-key="dermatology skin"><div class="ico">✨</div><h3>Dermatology</h3><p>Skin and hair care.</p></div>
+<div class="card searchable" data-key="dentistry dental"><div class="ico">🦷</div><h3>Dentistry</h3><p>Dental and oral care.</p></div>
+</div>
+</div>
+</section>
+
+<section class="blue" id="hospitals">
+<div class="wrap">
+<div class="kicker">HEALTHCARE DIRECTORY</div>
+<h2>Explore Hospitals</h2>
+<p class="desc">Explore healthcare categories and make an enquiry.</p>
+<div class="three">
+<div class="card hospital searchable" data-key="hospital multispeciality">
+<div class="hospital-top">🏥</div><div class="hospital-body"><span class="tag">HOSPITAL CATEGORY</span><h3>Multispeciality Hospital</h3><p>Explore multiple medical specialities and services.</p><a class="btn" href="#appointment">Enquire →</a></div>
+</div>
+<div class="card hospital searchable" data-key="hospital cardiac heart">
+<div class="hospital-top">🩺</div><div class="hospital-body"><span class="tag">SPECIALITY CATEGORY</span><h3>Cardiac Care</h3><p>Explore heart healthcare services.</p><a class="btn" href="#appointment">Enquire →</a></div>
+</div>
+<div class="card hospital searchable" data-key="hospital child pediatric">
+<div class="hospital-top">💙</div><div class="hospital-body"><span class="tag">SPECIALITY CATEGORY</span><h3>Child Healthcare</h3><p>Explore paediatric healthcare services.</p><a class="btn" href="#appointment">Enquire →</a></div>
+</div>
+</div>
+<p class="note">Illustrative categories only. These are not verified hospital listings or confirmed Ayushman Bharat empanelled hospitals.</p>
+</div>
+</section>
+
+<section id="doctors">
+<div class="wrap">
+<div class="kicker">MEDICAL PROFESSIONALS</div>
+<h2>Find Your Speciality</h2>
+<div class="three">
+<div class="card searchable" data-key="doctor cardiology"><div class="ico">👨‍⚕️</div><h3>Heart Specialist</h3><p>Cardiology</p></div>
+<div class="card searchable" data-key="doctor pediatrics"><div class="ico">👩‍⚕️</div><h3>Child Specialist</h3><p>Pediatrics</p></div>
+<div class="card searchable" data-key="doctor orthopedics"><div class="ico">🧑‍⚕️</div><h3>Bone Specialist</h3><p>Orthopedics</p></div>
+</div>
+<p class="note">Sample speciality cards, not verified doctor profiles or appointment availability.</p>
+</div>
+</section>
+
+<section>
+<div class="wrap cta">
+<div><div class="kicker">HEALTHCARE ACCESS</div><h2>Take Care of Your Health</h2><p>Start your healthcare enquiry today.</p></div>
+<a class="btn" href="#appointment">Get Started →</a>
+</div>
+</section>
+
+<section id="appointment">
+<div class="wrap">
+<div class="kicker">CONTACT US</div>
+<h2>Appointment Enquiry</h2>
+<p class="desc">Prepare an enquiry with your preferred speciality.</p>
+<form id="form">
+<div class="formgrid">
+<input name="name" required placeholder="Full name">
+<input name="phone" required type="tel" placeholder="Phone number">
+<select name="speciality" required>
+<option value="">Select speciality</option>
+<option>Cardiology</option><option>Neurology</option>
+<option>Orthopedics</option><option>Pediatrics</option>
+<option>General Medicine</option><option>Other</option>
+</select>
+<input type="date" name="date">
+<textarea name="message" placeholder="Your enquiry"></textarea>
+</div>
+<button class="btn" style="margin-top:15px">Prepare Enquiry</button>
+<p class="note">This demo form downloads an enquiry text file. It does not send information or confirm a hospital appointment. Do not enter sensitive medical information.</p>
+</form>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="wrap">
+<div class="footgrid">
+<div><h2 style="color:white">✚ Ayushman Hospital Book</h2><p>Healthcare discovery and appointment enquiry interface.</p></div>
+<div><h3>Quick Links</h3><p><a href="#home">Home</a><br><a href="#hospitals">Hospitals</a><br><a href="#doctors">Doctors</a></p></div>
+<div><h3>Explore</h3><p><a href="#departments">Departments</a><br><a href="#appointment">Contact</a></p></div>
+</div>
+<p>© <span id="year"></span> Ayushman Hospital Book. Independent website, not an official government portal.</p>
+</div>
+</footer>
+
+<script>
+document.getElementById('year').textContent=new Date().getFullYear();
+function searchNow(){
+ const q=document.getElementById('search').value.toLowerCase().trim();
+ const c=document.getElementById('category').value.toLowerCase();
+ document.querySelectorAll('.searchable').forEach(el=>{
+  const s=(el.innerText+' '+el.dataset.key).toLowerCase();
+  el.style.display=(!q||s.includes(q))&&(!c||s.includes(c))?'':'none';
+ });
+}
+document.getElementById('search').addEventListener('keydown',e=>{
+ if(e.key==='Enter')searchNow();
+});
+document.getElementById('form').addEventListener('submit',e=>{
+ e.preventDefault();
+ const d=new FormData(e.target);
+ const msg=[...d.entries()].map(x=>x[0]+': '+x[1]).join('\n');
+ const a=document.createElement('a');
+ a.href=URL.createObjectURL(new Blob([msg],{type:'text/plain'}));
+ a.download='appointment-enquiry.txt';
+ a.click();
+ URL.revokeObjectURL(a.href);
+ alert('Enquiry file prepared. No appointment has been booked.');
+});
+</script>
 </body>
 </html>

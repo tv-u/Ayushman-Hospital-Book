@@ -1,4 +1,4 @@
-name: Ayushman Hospital Flutter Web
+name: Publish Ayushman Website
 
 on:
   push:
@@ -15,39 +15,29 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-          cache: true
-
-      - name: Flutter dependencies
-        run: flutter pub get
-
-      - name: Build Flutter website
-        run: |
-          flutter build web --release \
-            --base-href /Ayushman-Hospital-Book/
-
-      - name: Verify build
-        run: test -s build/web/index.html
-
-      - uses: actions/configure-pages@v5
-
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: build/web
-
   deploy:
-    needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify homepage
+        run: |
+          test -s index.html
+          grep -q "Ayushman Hospital Book" index.html
+          echo "Homepage verified"
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy website
+        id: deployment
         uses: actions/deploy-pages@v4

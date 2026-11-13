@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayushman Hospital Directory & Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- Navbar -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 text-white p-2 rounded-xl font-bold text-lg shadow-md">🏥</div>
+                <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-blue-600 bg-clip-text text-transparent">Ayushman Portal</span>
+            </div>
+            <div>
+                <button onclick="triggerSync()" id="syncBtn" class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-md transition">🔄 डेटा सिंक करें</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero & Search Section -->
+    <section class="bg-gradient-to-r from-indigo-900 to-blue-900 text-white py-16 px-4">
+        <div class="max-w-5xl mx-auto text-center">
+            <h1 class="text-3xl sm:text-5xl font-extrabold mb-4">आयुष्मान भारत अस्पताल निर्देशिका</h1>
+            <p class="text-indigo-200 text-base sm:text-lg mb-8">भारत भर के सत्यापित सरकारी और निजी अस्पतालों की खोज करें।</p>
+            
+            <!-- Search Form -->
+            <form method="GET" action="/" class="bg-white p-3 rounded-2xl shadow-xl flex flex-col sm:flex-row gap-3">
+                <input type="text" name="q" value="{{ query }}" placeholder="अस्पताल, शहर या जिला दर्ज करें..." class="flex-grow px-4 py-3 rounded-xl text-slate-800 focus:outline-none border border-slate-200">
+                <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold transition">खोजें</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-8 w-full">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 text-center">
+                <div class="text-3xl font-bold text-indigo-600 mb-1">{{ total }}</div>
+                <div class="text-slate-500 text-sm font-medium">कुल पंजीकृत अस्पताल</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 text-center">
+                <div class="text-3xl font-bold text-emerald-600 mb-1">{{ states_count }}</div>
+                <div class="text-slate-500 text-sm font-medium">कुल राज्य कवर</div>
+            </div>
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-slate-100 text-center">
+                <div class="text-3xl font-bold text-blue-600 mb-1">{{ districts_count }}</div>
+                <div class="text-slate-500 text-sm font-medium">कुल जिले</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hospital Results Grid -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
+        <h2 class="text-2xl font-bold text-slate-900 mb-6">उपलब्ध अस्पताल सूची</h2>
+        
+        {% if hospitals %}
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for h in hospitals %}
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between">
+                <div>
+                    <div class="flex justify-between items-start mb-3">
+                        <span class="bg-indigo-50 text-indigo-700 text-xs font-semibold px-2.5 py-1 rounded-lg">{{ h[4] }}</span>
+                        <span class="bg-emerald-50 text-emerald-700 text-xs font-semibold px-2.5 py-1 rounded-lg">PM-JAY: {{ h[6] }}</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">{{ h[1] }}</h3>
+                    <p class="text-slate-500 text-sm mb-4">📍 {{ h[3] }}, {{ h[2] }}</p>
+                    <p class="text-slate-600 text-xs bg-slate-50 p-2.5 rounded-xl border border-slate-100 mb-4">🩺 <b>विशेषताएँ:</b> {{ h[5] }}</p>
+                </div>
+                <a href="https://maps.google.com/?q={{ h[1] }} {{ h[3] }} {{ h[2] }}" target="_blank" class="w-full bg-slate-900 hover:bg-slate-800 text-white text-center py-2.5 rounded-xl text-sm font-medium transition block">मैप पर देखें</a>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center py-16 bg-white rounded-2xl border border-slate-200 shadow-sm">
+            <p class="text-slate-500 text-lg mb-4">कोई अस्पताल डेटा नहीं मिला या अभी सिंक नहीं किया गया है।</p>
+            <button onclick="triggerSync()" class="bg-indigo-600 text-white px-6 py-3 rounded-xl font-medium shadow-md">तुरंत डेटा सिंक करें</button>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 border-t border-slate-800 text-center text-sm">
+        <p>&copy; 2026 Ayushman Portal. सभी अधिकार सुरक्षित। भारत सरकार स्वास्थ्य निर्देशिका।</p>
+    </footer>
+
+    <script>
+        function triggerSync() {
+            const btn = document.getElementById('syncBtn');
+            btn.innerText = "🔄 सिंक हो रहा है...";
+            fetch('/sync-data')
+                .then(res => res.json())
+                .then(data => {
+                    alert('सफलतापूर्वक सिंक हुए रिकॉर्ड्स: ' + data.synced_records);
+                    location.reload();
+                })
+                .catch(err => {
+                    alert('सिंक करने में त्रुटि आई!');
+                    btn.innerText = "🔄 डेटा सिंक करें";
+                });
+        }
+    </script>
+</body>
+</html>

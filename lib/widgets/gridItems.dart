@@ -18,7 +18,7 @@ class GridViewItems extends StatelessWidget {
             itemBuilder: ((context, index) {
               return Container(
                 decoration: BoxDecoration(
-                  
+
                   color: Colors.white,
                   border: Border.all(color: Colors.black, width: 3),
                 borderRadius: const BorderRadius.all(Radius.circular(20))),

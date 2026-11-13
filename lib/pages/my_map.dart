@@ -31,7 +31,7 @@ class _MyMapState extends State<MyMap> {
 
   @override
   void initState() {
-    
+
     webViewInit();
     setCustomMarkes();
     currLocation();
@@ -190,7 +190,7 @@ class _MyMapState extends State<MyMap> {
               setState(() {});
             },
           ),
-          
+
         TopExpandButtons(sortedMarkerSet: (value) {
           getMarker(value);
           setState(() {});

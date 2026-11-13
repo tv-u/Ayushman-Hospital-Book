@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'DropDownType.dart';
+import 'dropDownType.dart';
 import 'dropDownDistrict.dart';
 import 'dropDownState.dart';
 

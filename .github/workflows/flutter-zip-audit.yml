@@ -26,39 +26,30 @@ jobs:
           channel: stable
           cache: true
 
-      - name: Find and verify ZIP
+      - name: Find ZIP or use repository Flutter project
         id: project
         shell: bash
         run: |
           set -euo pipefail
-
-          ZIP="$(find . -type f -iname '*.zip' \
-            -not -path './.git/*' | head -n 1)"
-
-          if [ -z "$ZIP" ]; then
-            echo "ERROR: No ZIP found"
-            exit 1
+          ZIP="$(find . -type f -iname '*.zip' -not -path './.git/*' | sort | head -n 1 || true)"
+          if [ -n "$ZIP" ]; then
+            echo "ZIP found: $ZIP"
+            unzip -t "$ZIP"
+            mkdir -p "$RUNNER_TEMP/flutter-source"
+            unzip -q "$ZIP" -d "$RUNNER_TEMP/flutter-source"
+            FILE="$(find "$RUNNER_TEMP/flutter-source" -name pubspec.yaml -type f -print -quit)"
+            if [ -z "$FILE" ]; then
+              echo "ERROR: ZIP has no Flutter project"
+              exit 1
+            fi
+            PROJECT="$(dirname "$FILE")"
+          else
+            echo "No ZIP found; auditing repository Flutter source."
+            PROJECT="$GITHUB_WORKSPACE"
+            test -f "$PROJECT/pubspec.yaml"
           fi
-
-          echo "ZIP: $ZIP"
-          unzip -t "$ZIP"
-
-          mkdir -p "$RUNNER_TEMP/flutter-source"
-          unzip -q "$ZIP" -d "$RUNNER_TEMP/flutter-source"
-
-          PROJECT="$(find "$RUNNER_TEMP/flutter-source" \
-            -name pubspec.yaml -type f -print -quit)"
-
-          if [ -z "$PROJECT" ]; then
-            echo "ERROR: pubspec.yaml missing"
-            exit 1
-          fi
-
-          PROJECT="$(dirname "$PROJECT")"
           echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
-
           echo "Flutter project: $PROJECT"
-
       - name: Verify required files
         working-directory: ${{ steps.project.outputs.project }}
         run: |

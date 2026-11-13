@@ -1,0 +1,101 @@
+name: Complete Flutter ZIP Audit
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: flutter-zip-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Find and verify ZIP
+        id: project
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          ZIP="$(find . -type f -iname '*.zip' \
+            -not -path './.git/*' | head -n 1)"
+
+          if [ -z "$ZIP" ]; then
+            echo "ERROR: No ZIP found"
+            exit 1
+          fi
+
+          echo "ZIP: $ZIP"
+          unzip -t "$ZIP"
+
+          mkdir -p "$RUNNER_TEMP/flutter-source"
+          unzip -q "$ZIP" -d "$RUNNER_TEMP/flutter-source"
+
+          PROJECT="$(find "$RUNNER_TEMP/flutter-source" \
+            -name pubspec.yaml -type f -print -quit)"
+
+          if [ -z "$PROJECT" ]; then
+            echo "ERROR: pubspec.yaml missing"
+            exit 1
+          fi
+
+          PROJECT="$(dirname "$PROJECT")"
+          echo "project=$PROJECT" >> "$GITHUB_OUTPUT"
+
+          echo "Flutter project: $PROJECT"
+
+      - name: Verify required files
+        working-directory: ${{ steps.project.outputs.project }}
+        run: |
+          set -e
+          test -s pubspec.yaml
+          test -s lib/main.dart
+          test -s web/index.html
+
+          echo "All required files found"
+
+      - name: Install dependencies
+        working-directory: ${{ steps.project.outputs.project }}
+        run: flutter pub get
+
+      - name: Analyze all Dart code
+        working-directory: ${{ steps.project.outputs.project }}
+        run: flutter analyze
+
+      - name: Run Flutter tests
+        working-directory: ${{ steps.project.outputs.project }}
+        run: flutter test
+
+      - name: Build Flutter Web
+        working-directory: ${{ steps.project.outputs.project }}
+        run: flutter build web --release --base-href /Ayushman-Hospital-Book/
+
+      - name: Verify generated website
+        working-directory: ${{ steps.project.outputs.project }}
+        run: |
+          set -e
+          test -s build/web/index.html
+          echo "FLUTTER WEB BUILD SUCCESSFUL"
+
+      - name: Upload build and audit artifact
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ayushman-flutter-web-build
+          path: ${{ steps.project.outputs.project }}/build/web/
+          retention-days: 7

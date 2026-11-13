@@ -1,5 +1,6 @@
 import 'package:ayush_hospitals/modules/topInfoModule/TItems.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:carousel_slider/carousel_slider.dart' hide CarouselController;
+import 'package:carousel_slider/carousel_slider.dart' as cs show CarouselController;
 import 'package:flutter/material.dart';
 
 class TopInfo extends StatefulWidget {

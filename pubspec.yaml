@@ -43,7 +43,7 @@ dependencies:
   flutter_map: ^3.0.0
   mysql1: ^0.20.0
   flutter_inappwebview: ^5.7.1
-  carousel_slider: ^4.1.1
+  carousel_slider: ^5.0.0
   shared_preferences: ^2.0.15
   mysql_client: ^0.0.27
 
